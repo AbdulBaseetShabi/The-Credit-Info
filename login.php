@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -19,7 +23,7 @@
             position: relative;
         }
 
-        #login-container {
+        #login-form {
             height: 200px;
             width: 500px;
             background-color: lavender;
@@ -37,6 +41,7 @@
             text-align: center;
             width: 100%;
             color: #B33A3A;
+            margin-top: 8px;
         }
 
         #user-id {
@@ -83,7 +88,7 @@
             margin-top: 5px;
             text-align: center;
             border-radius: 1.5rem;
-            box-sizing: border-box;  
+            box-sizing: border-box;
             cursor: pointer;
             user-select: none;
             font-family: cursive;
@@ -92,21 +97,37 @@
             border: none;
             box-shadow: 5px 5px black;
         }
-
     </style>
 </head>
 
 <body>
     <div id="body">
-        <form id="login-container" action="get" action="/main.php">
+        <form id="login-form" method="get" action="/login.php">
             <label id="title">The Credit Info</label>
             <div id="id-input">
                 <!-- <label>User ID: </label> -->
-                <input id="user-id" type="number" placeholder="Enter your User ID" />
+                <input id="user-id" type="number" name="uid" placeholder="Enter your User ID" name="user-id" autocomplete="off" />
             </div>
-            <!-- <label class="prompt">Enter your UserID above</label> -->
-            <button id="login-button" type="submit" form="login-container"
-                value="Submit">Open Account</button>
+            
+            <button id="login-button" type="submit" form="login-form" value="Submit">Open Account</button>
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["uid"])) {
+                $user_id = trim($_GET["uid"]);
+
+                if ($user_id != '' && filter_var($user_id, FILTER_VALIDATE_INT) && (int)$user_id > 0 && strlen($user_id) === 8) {
+                    $db_check = True; //TODO: Check databse for user_id
+
+                    if($db_check === True) {
+                        $_SESSION['uid'] = $user_id;
+                        header("Location: /main.php");
+                    }else{
+                        echo "<label class=" . "prompt" . ">The UserID inputed does not exist. Please try again!</label>";    
+                    }
+                } else {
+                    echo "<label class=" . "prompt" . ">Enter a valid UserID above. It is an 8 digit number</label>";
+                }
+            }
+            ?>
         </form>
         <label id="footer">Created by <span style="font-weight: 700;">The Humans Trying to Pass (HTTP)</span></label>
     </div>
