@@ -94,6 +94,22 @@ session_start();
 
         #results {
             overflow-y: auto;
+            margin: 5px;
+            max-height: calc(100vh - 190px);
+            box-sizing: border-box;
+            /* scrollbar-width: thin; */
+        }
+
+        #results::-webkit-scrollbar-thumb {
+            background: lavender;
+            border-radius: 20px;
+            margin: 2px;
+        }
+
+        #results::-webkit-scrollbar {
+            border-radius: 20px;
+            border: 3px solid black;
+            width: 15px;
         }
 
         .card {
