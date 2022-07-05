@@ -63,7 +63,7 @@ function get_transaction_by_desc(int $user_id, string $desc):array {
         $transaction_list = $conn->query($sqlGetTransactionByDetails);
         $conn = null;
         print_r($transaction_list);
-        return transaction_list;
+        return $transaction_list;
     } catch(PDOException $e) {
         echo $sqlGetTransactionByDetails . "<br>" . $e->getMessage();
         $conn = null;
