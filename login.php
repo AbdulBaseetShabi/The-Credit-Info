@@ -126,7 +126,7 @@ session_start();
                         echo "<label class=" . "prompt" . ">The UserID inputed does not exist. Please try again!</label>";    
                     }
                 } else {
-                    echo "<label class=" . "prompt" . ">Enter a valid UserID above. It is an 9 digit number</label>";
+                    echo "<label class=" . "prompt" . ">Enter a valid UserID above. It is a 9 digit number</label>";
                 }
             }
             ?>
