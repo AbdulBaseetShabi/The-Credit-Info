@@ -37,7 +37,7 @@ try {
   
     // use exec() because no results are returned
     $conn->exec($sqlCreateTable);
-    echo "Table $tablename created successfully";
+    echo "Table $tablename created successfully<br/>";
     
     try {
         // sql to insert data into table
