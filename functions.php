@@ -34,7 +34,7 @@ function check_user_exists(int $user_id):bool {
 }
 
 //get list of user's transactions
-function get_user_transaction_list(int $user_id, string $desc):array {
+function get_user_transaction_list(int $user_id):array {
     global $tablename;
 
     $conn = connect_DB();
