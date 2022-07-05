@@ -232,9 +232,6 @@ session_start();
                 }
 
                 // GET RESULTS
-                $test1 = array('transaction_id' => 123, 'description' => 'Groceries at Walmart', 'amount' => 100);
-                $test2 = array('transaction_id' => 154, 'description' => 'Gym Membership Subscription', 'amount' => 50);
-
                 $results = array($test1, $test2);
 
                 $transaction_list = get_user_transaction_list($uid, $query);
@@ -248,7 +245,7 @@ session_start();
                     echo "<div id='card-inputs'>";
                     echo "<label class='row'><span>Transaction ID: </span>" . $result["transaction_id"] . "</label>";
                     echo "<form id='amount-form-" . $result["transaction_id"] . "' method='post' action='/main.php'><label class='row'><span>Amount: </span>$<input type='number' name='amount' value=" . $result['amount'] . " style='width: 10%' /></label> <input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
-                    echo "<form id='description-form-" . $result["transaction_id"] . "' method='post' action='/main.php'><label class='row'><span>Description: </span><input type='text' name='description' value=" . $result['description'] . " style='width: 85%'/></label><input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
+                    echo "<form id='description-form-" . $result["transaction_id"] . "' method='post' action='/main.php'><label class='row'><span>Description: </span><input type='text' name='description' value='" . $result['description'] . "' style='width: 85%'/></label><input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
                     echo "</div>";
                     echo "<div id='card-buttons'>";
                     echo "<button type='submit' form='amount-form-" . $result["transaction_id"] . "' style='background-color: #2cb67d;'>Update Amount</button>";
