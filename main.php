@@ -1,4 +1,6 @@
 <?php
+define('__ROOT__', dirname(__FILE__));
+require_once(__ROOT__.'/functions.php');
 session_start();
 ?>
 
@@ -235,11 +237,17 @@ session_start();
 
                 $results = array($test1, $test2);
 
+                $transaction_list = get_user_transaction_list($uid, $query);
+
+                foreach ($transaction_list as $item) {
+                    array_push($results, array('transaction_id' => $item['transactionID'], 'description' => $item['details'], 'amount' => $item['amount']));
+                }
+
                 foreach ($results as $result) {
                     echo "<div class='card'>";
                     echo "<div id='card-inputs'>";
                     echo "<label class='row'><span>Transaction ID: </span>" . $result["transaction_id"] . "</label>";
-                    echo "<form id='amount-form-" . $result["transaction_id"] . "' method='post' action='/main.php'><label class='row'><span>Amount: </span>$<input type='number' name='amount' value=" . $result['amount'] . " style='width: 5%' /></label> <input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
+                    echo "<form id='amount-form-" . $result["transaction_id"] . "' method='post' action='/main.php'><label class='row'><span>Amount: </span>$<input type='number' name='amount' value=" . $result['amount'] . " style='width: 10%' /></label> <input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
                     echo "<form id='description-form-" . $result["transaction_id"] . "' method='post' action='/main.php'><label class='row'><span>Description: </span><input type='text' name='description' value=" . $result['description'] . " style='width: 85%'/></label><input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
                     echo "</div>";
                     echo "<div id='card-buttons'>";

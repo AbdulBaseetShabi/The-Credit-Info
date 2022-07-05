@@ -1,4 +1,6 @@
 <?php
+define('__ROOT__', dirname(__FILE__));
+require_once(__ROOT__.'/functions.php');
 session_start();
 ?>
 
@@ -114,8 +116,8 @@ session_start();
             if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["uid"])) {
                 $user_id = trim($_GET["uid"]);
 
-                if ($user_id != '' && filter_var($user_id, FILTER_VALIDATE_INT) && (int)$user_id > 0 && strlen($user_id) === 8) {
-                    $db_check = True; //TODO: Check databse for user_id
+                if ($user_id != '' && filter_var($user_id, FILTER_VALIDATE_INT) && (int)$user_id > 0 && strlen($user_id) === 9) {
+                    $db_check = check_user_exists($user_id);
 
                     if($db_check === True) {
                         $_SESSION['uid'] = $user_id;
@@ -124,7 +126,7 @@ session_start();
                         echo "<label class=" . "prompt" . ">The UserID inputed does not exist. Please try again!</label>";    
                     }
                 } else {
-                    echo "<label class=" . "prompt" . ">Enter a valid UserID above. It is an 8 digit number</label>";
+                    echo "<label class=" . "prompt" . ">Enter a valid UserID above. It is an 9 digit number</label>";
                 }
             }
             ?>
