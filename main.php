@@ -185,11 +185,6 @@ session_start();
 </head>
 
 <body>
-    <?php
-    // if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["uid"])) {
-    //     $GLOBALS["uid"] = $_GET["uid"];
-    // }
-    ?>
     <div id="body">
         <div id="header">
             <label id="title">The Credit Info</label>
@@ -232,9 +227,13 @@ session_start();
                 }
 
                 // GET RESULTS
-                $results = array($test1, $test2);
-
-                $transaction_list = get_user_transaction_list($uid, $query);
+                $results = array();
+                
+                if (strlen($query) > 0) {
+                    $transaction_list = get_transaction_by_desc($uid, $query);
+                }else{
+                    $transaction_list = get_user_transaction_list($uid);
+                }
 
                 foreach ($transaction_list as $item) {
                     array_push($results, array('transaction_id' => $item['transactionID'], 'description' => $item['details'], 'amount' => $item['amount']));
