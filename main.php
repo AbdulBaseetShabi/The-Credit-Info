@@ -222,7 +222,7 @@ session_start();
                 }
 
                 //DISPLAY RESULTS IN DB
-                if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["query"])) {
+                if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_GET["query"])) {
                     $query = filter_var($_GET["query"], FILTER_UNSAFE_RAW);
                 }
 
