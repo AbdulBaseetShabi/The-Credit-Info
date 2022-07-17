@@ -61,7 +61,6 @@ function get_transaction_by_desc(int $user_id, string $desc):array {
 
     $conn = connect_DB();
     try {
-        // sql to extract the user's previous transaction details
         $sqlGetTransactionByDetails = "SELECT transactionID, details, amount FROM $tablename WHERE userID = $user_id AND details LIKE '%$desc%'";
         $stmt= $conn->prepare($sqlGetTransactionByDetails);
         $stmt->execute();
@@ -70,19 +69,18 @@ function get_transaction_by_desc(int $user_id, string $desc):array {
         $conn = null;
         return $transaction_list;
     } catch(PDOException $e) {
-        // echo $sqlGetTransactionByDetails . "<br>" . $e->getMessage();
+        echo $sqlGetTransactionByDetails . "<br>" . $e->getMessage();
         $conn = null;
         return array();
     }
 }
 
-//get user's transaction by description
+//update transaction amount
 function update_amount(int $user_id, int $transaction_id, float $amount):bool {
     global $tablename;
 
     $conn = connect_DB();
     try {
-        // sql to extract the user's previous transaction details
         $sqlUpdateAmount = "UPDATE $tablename SET amount = $amount WHERE userID = $user_id AND transactionID = $transaction_id";
         $conn->prepare($sqlUpdateAmount)->execute();
         $conn = null;
@@ -94,6 +92,24 @@ function update_amount(int $user_id, int $transaction_id, float $amount):bool {
     }
 }
 
+//update transaction description
+function update_desc(int $user_id, int $transaction_id, string $desc):bool {
+    global $tablename;
+
+    $conn = connect_DB();
+    try {
+        $sqlUpdateDetails = "UPDATE $tablename SET details = '$desc' WHERE userID = $user_id AND transactionID = $transaction_id";
+        $conn->prepare($sqlUpdateDetails)->execute();
+        $conn = null;
+        return True;
+    } catch(PDOException $e) {
+        echo $sqlUpdateDetails . "<br>" . $e->getMessage();
+        $conn = null;
+        return False;
+    }
+}
+
 
 // UPDATE CreditHistory SET amount = 10.00 WHERE userID = 123456789 AND transactionID = 0
+// UPDATE CreditHistory SET details = "Two Fitness barbells" WHERE userID = 123456789 AND transactionID = 21
 ?>

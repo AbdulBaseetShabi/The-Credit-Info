@@ -189,7 +189,7 @@ session_start();
         <div id="header">
             <label id="title">The Credit Info</label>
             <div id="search">
-                <form id="query-form" method="get" action="/my_project/main.php">
+                <form id="query-form" method="get" action="/main.php">
                     <input id="search-query" type="text" name="query" placeholder="Enter a description" autocomplete="off" />
                     <button id="search-button" type="submit" form="query-form">Search</button>
                 </form>
@@ -217,10 +217,14 @@ session_start();
                 
                     } else if (isset($_POST['description'])) {
                         $description = filter_var($_POST['description'], FILTER_UNSAFE_RAW);
+                        $successful_update = update_desc($uid, $tid, $description);
 
                         //UPDATE THE DATA using uid and tid
+                        if($successful_update){
                         echo "<div class='card' id='alert'> Description was successfully updated for transaction_id: $tid </div>";
+                    } else {
                         echo "<div class='card' id='alert'> Update unsuccessful. Error Occured: This is the error </div>";
+                    }
                     } else {
                         echo "Invalid Post REQUEST";
                     }
@@ -248,8 +252,8 @@ session_start();
                     echo "<div class='card'>";
                     echo "<div id='card-inputs'>";
                     echo "<label class='row'><span>Transaction ID: </span>" . $result["transaction_id"] . "</label>";
-                    echo "<form id='amount-form-" . $result["transaction_id"] . "' method='post' action='/my_project/main.php'><label class='row'><span>Amount: </span>$<input type='number' name='amount' value=" . $result['amount'] . " style='width: 10%' /></label> <input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
-                    echo "<form id='description-form-" . $result["transaction_id"] . "' method='post' action='/my_project/main.php'><label class='row'><span>Description: </span><input type='text' name='description' value='" . $result['description'] . "' style='width: 85%'/></label><input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
+                    echo "<form id='amount-form-" . $result["transaction_id"] . "' method='post' action='/main.php'><label class='row'><span>Amount: </span>$<input type='number' name='amount' value=" . $result['amount'] . " style='width: 10%' /></label> <input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
+                    echo "<form id='description-form-" . $result["transaction_id"] . "' method='post' action='/main.php'><label class='row'><span>Description: </span><input type='text' name='description' value='" . $result['description'] . "' style='width: 85%'/></label><input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
                     echo "</div>";
                     echo "<div id='card-buttons'>";
                     echo "<button type='submit' form='amount-form-" . $result["transaction_id"] . "' style='background-color: #2cb67d;'>Update Amount</button>";
