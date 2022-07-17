@@ -104,7 +104,7 @@ session_start();
 
 <body>
     <div id="body">
-        <form id="login-form" method="get" action="/login.php">
+        <form id="login-form" method="post" action="/login.php">
             <label id="title">The Credit Info</label>
             <div id="id-input">
                 <!-- <label>User ID: </label> -->
@@ -113,8 +113,8 @@ session_start();
             
             <button id="login-button" type="submit" form="login-form" value="Submit">Open Account</button>
             <?php
-            if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["uid"])) {
-                $user_id = trim($_GET["uid"]);
+            if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["uid"])) {
+                $user_id = trim($_POST["uid"]);
 
                 if ($user_id != '' && filter_var($user_id, FILTER_VALIDATE_INT) && (int)$user_id > 0 && strlen($user_id) === 9) {
                     $db_check = check_user_exists($user_id);
