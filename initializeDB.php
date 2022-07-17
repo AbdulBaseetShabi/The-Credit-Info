@@ -53,42 +53,42 @@ try {
         $userID = '123456789';
         $transactionID = '0';
         $details = 'Mcdonald big mac fries';
-        $amount = '20.00';
+        $amount = '20';
         $stmt->execute();
 
         // insert user 1 transaction 2
         $userID = '123456789';
         $transactionID = '21';
         $details = 'Fitness barbells';
-        $amount = '150.75';
+        $amount = '150';
         $stmt->execute();
 
         // insert user 1 transaction 3
         $userID = '123456789';
         $transactionID = '2';
         $details = 'Fitness rowing machine';
-        $amount = '239.01';
+        $amount = '239';
         $stmt->execute();
 
         // insert user 1 transaction 4
         $userID = '123456789';
         $transactionID = '374';
         $details = 'Yoga mat fit plus';
-        $amount = '11.99';
+        $amount = '12';
         $stmt->execute();
 
         // insert user 2 transaction 1
         $userID = '111111111';
         $transactionID = '0';
         $details = 'Starbucks Mocha Cookie Crumble Frappuccino';
-        $amount = '9999.99';
+        $amount = '9999';
         $stmt->execute();
 
         // insert user 3 transaction 2
         $userID = '111111111';
         $transactionID = '1';
         $details = "Gino's Large Pepperino Pizza";
-        $amount = '13.89';
+        $amount = '13';
         $stmt->execute();
 
         echo "6 new records across 2 users were created successfully";
