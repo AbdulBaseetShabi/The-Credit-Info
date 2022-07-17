@@ -76,7 +76,7 @@ function get_transaction_by_desc(int $user_id, string $desc):array {
 }
 
 //update transaction amount
-function update_amount(int $user_id, int $transaction_id, float $amount):bool {
+function update_amount(int $user_id, int $transaction_id, int $amount):bool {
     global $tablename;
 
     $conn = connect_DB();
