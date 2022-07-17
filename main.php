@@ -1,9 +1,15 @@
 <?php
 define('__ROOT__', dirname(__FILE__));
-require_once(__ROOT__.'/functions.php');
+require_once(__ROOT__ . '/functions.php');
 session_start();
-?>
 
+//LOG USER OUT
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['logout']) && $_POST['logout'] === "logout") {
+    session_destroy();
+    header("Location: /login.php");
+}
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -181,6 +187,25 @@ session_start();
             border-left: 5px solid orange;
             min-height: 50px;
         }
+
+        #logout-button {
+            position: absolute;
+            bottom: 60px;
+            left: 25%;
+            background-color: #c93f3f;
+            width: 40%;
+            height: 30px;
+            text-align: center;
+            border-radius: 1.5rem;
+            box-sizing: border-box;
+            cursor: pointer;
+            user-select: none;
+            font-family: cursive;
+            font-weight: 600;
+            text-transform: uppercase;
+            border: none;
+            box-shadow: 5px 5px black;
+        }
     </style>
 </head>
 
@@ -189,7 +214,7 @@ session_start();
         <div id="header">
             <label id="title">The Credit Info</label>
             <div id="search">
-                <form id="query-form" method="get" action="/main.php">
+                <form id="query-form" method="post" action="/main.php">
                     <input id="search-query" type="text" name="query" placeholder="Enter a description" autocomplete="off" />
                     <button id="search-button" type="submit" form="query-form">Search</button>
                 </form>
@@ -197,50 +222,51 @@ session_start();
         </div>
         <div id="results">
             <?php
+            //CHECK IF USER IS LOGGED IN
             if (isset($_SESSION["uid"]) && !empty($_SESSION["uid"])) {
                 $uid = $_SESSION["uid"];
                 $query = "";
 
+
                 //MAKE UPDATES TO DATABASE
-                if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['transaction_id'])) {
                     $tid = $_POST['transaction_id']; //SANTIZE?
                     if (isset($_POST['amount'])) {
                         $amount = $_POST['amount'];
                         $successful_update = update_amount($uid, $tid, $amount);
 
                         //UPDATE THE DATA using uid and tid
-                        if($successful_update){
+                        if ($successful_update) {
                             echo "<div class='card' id='alert'> Amount was successfully updated for transaction_id: $tid </div>";
                         } else {
                             echo "<div class='card' id='alert'> Update unsuccessful. Error Occured: This is the error </div>";
                         }
-                
                     } else if (isset($_POST['description'])) {
                         $description = filter_var($_POST['description'], FILTER_UNSAFE_RAW);
                         $successful_update = update_desc($uid, $tid, $description);
 
                         //UPDATE THE DATA using uid and tid
-                        if($successful_update){
-                        echo "<div class='card' id='alert'> Description was successfully updated for transaction_id: $tid </div>";
+                        if ($successful_update) {
+                            echo "<div class='card' id='alert'> Description was successfully updated for transaction_id: $tid </div>";
+                        } else {
+                            echo "<div class='card' id='alert'> Update unsuccessful. Error Occured: This is the error </div>";
+                        }
                     } else {
-                        echo "<div class='card' id='alert'> Update unsuccessful. Error Occured: This is the error </div>";
-                    }
-                    } else {
-                        echo "Invalid Post REQUEST";
+                        echo "<div class='card' id='alert'> Invalid Post REQUEST</div>";
                     }
                 }
 
                 //DISPLAY RESULTS IN DB
-                if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_GET["query"])) {
-                    $query = filter_var($_GET["query"], FILTER_UNSAFE_RAW);
+                if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["query"])) {
+                    $query = filter_var($_POST["query"], FILTER_UNSAFE_RAW);
                 }
 
                 // GET RESULTS
                 $results = array();
-                
+
                 if (strlen($query) > 0) {
                     $transaction_list = get_transaction_by_desc($uid, $query);
-                }else{
+                } else {
                     $transaction_list = get_user_transaction_list($uid);
                 }
 
@@ -248,25 +274,34 @@ session_start();
                     array_push($results, array('transaction_id' => $item['transactionID'], 'description' => $item['details'], 'amount' => $item['amount']));
                 }
 
-                foreach ($results as $result) {
-                    echo "<div class='card'>";
-                    echo "<div id='card-inputs'>";
-                    echo "<label class='row'><span>Transaction ID: </span>" . $result["transaction_id"] . "</label>";
-                    echo "<form id='amount-form-" . $result["transaction_id"] . "' method='post' action='/main.php'><label class='row'><span>Amount: </span>$<input type='number' name='amount' value=" . $result['amount'] . " style='width: 10%' /></label> <input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
-                    echo "<form id='description-form-" . $result["transaction_id"] . "' method='post' action='/main.php'><label class='row'><span>Description: </span><input type='text' name='description' value='" . $result['description'] . "' style='width: 85%'/></label><input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
-                    echo "</div>";
-                    echo "<div id='card-buttons'>";
-                    echo "<button type='submit' form='amount-form-" . $result["transaction_id"] . "' style='background-color: #2cb67d;'>Update Amount</button>";
-                    echo "<button type='submit' form='description-form-" . $result["transaction_id"] . "' style='background-color: #329fc4;'>Update Description</button>";
-                    echo "</div>";
-                    echo "</div>";
+                if (count($results) > 0) {
+                    foreach ($results as $result) {
+                        echo "<div class='card'>";
+                        echo "<div id='card-inputs'>";
+                        echo "<label class='row'><span>Transaction ID: </span>" . $result["transaction_id"] . "</label>";
+                        echo "<form id='amount-form-" . $result["transaction_id"] . "' method='post' action='/main.php'><label class='row'><span>Amount: </span>$<input type='number' name='amount' value=" . $result['amount'] . " style='width: 10%' /></label> <input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
+                        echo "<form id='description-form-" . $result["transaction_id"] . "' method='post' action='/main.php'><label class='row'><span>Description: </span><input type='text' name='description' value='" . $result['description'] . "' style='width: 85%'/></label><input type='hidden' name='transaction_id' value=" . $result['transaction_id'] . " /></form>";
+                        echo "</div>";
+                        echo "<div id='card-buttons'>";
+                        echo "<button type='submit' form='amount-form-" . $result["transaction_id"] . "' style='background-color: #2cb67d;'>Update Amount</button>";
+                        echo "<button type='submit' form='description-form-" . $result["transaction_id"] . "' style='background-color: #329fc4;'>Update Description</button>";
+                        echo "</div>";
+                        echo "</div>";
+                    }
+                }else{
+                    echo "<div class='card' id='alert'> Either the database is empty or the search key provided has no corresponding data in the database</div>";
                 }
+
             } else {
                 header("Location: /login.php");
             }
             ?>
 
         </div>
+        <form id="logout-form" method="post" action="/main.php">
+            <input type="hidden" name="logout" value="logout" />
+            <button id="logout-button" type="submit" form="logout-form">Logout</button>
+        </form>
         <label id="footer">Created by <span style="font-weight: 700;">The Humans Trying to Pass (HTTP)</span></label>
     </div>
 </body>
