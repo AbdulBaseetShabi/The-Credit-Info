@@ -76,4 +76,24 @@ function get_transaction_by_desc(int $user_id, string $desc):array {
     }
 }
 
+//get user's transaction by description
+function update_amount(int $user_id, int $transaction_id, float $amount):bool {
+    global $tablename;
+
+    $conn = connect_DB();
+    try {
+        // sql to extract the user's previous transaction details
+        $sqlUpdateAmount = "UPDATE $tablename SET amount = $amount WHERE userID = $user_id AND transactionID = $transaction_id";
+        $conn->prepare($sqlUpdateAmount)->execute();
+        $conn = null;
+        return True;
+    } catch(PDOException $e) {
+        echo $sqlUpdateAmount . "<br>" . $e->getMessage();
+        $conn = null;
+        return False;
+    }
+}
+
+
+// UPDATE CreditHistory SET amount = 10.00 WHERE userID = 123456789 AND transactionID = 0
 ?>
