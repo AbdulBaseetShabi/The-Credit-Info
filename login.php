@@ -105,7 +105,7 @@ session_start();
 <body>
     <div id="body">
         <form id="login-form" method="post" action="/login.php">
-            <label id="title">The Credit Info</label>
+            <label id="title">CREDERE</label>
             <div id="id-input">
                 <!-- <label>User ID: </label> -->
                 <input id="user-id" type="number" name="uid" placeholder="Enter your User ID" name="user-id" autocomplete="off" />
