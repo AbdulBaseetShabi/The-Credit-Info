@@ -114,7 +114,7 @@ session_start();
             <button id="login-button" type="submit" form="login-form" value="Submit">Open Account</button>
             <?php
             if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["uid"])) {
-                $user_id = trim($_POST["uid"]);
+                $user_id = htmlspecialchars(trim($_POST["uid"]));
 
                 if ($user_id != '' && filter_var($user_id, FILTER_VALIDATE_INT) && (int)$user_id > 0 && strlen($user_id) === 9) {
                     $db_check = check_user_exists($user_id);

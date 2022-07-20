@@ -242,7 +242,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['logout']) && $_POST['
                             echo "<div class='card' id='alert'> Update unsuccessful. Error Occured: This is the error </div>";
                         }
                     } else if (isset($_POST['description'])) {
-                        $description = filter_var($_POST['description'], FILTER_UNSAFE_RAW);
+                        $description = filter_var(htmlspecialchars($_POST['description']), FILTER_UNSAFE_RAW);
                         $successful_update = update_desc($uid, $tid, $description);
 
                         //UPDATE THE DATA using uid and tid
@@ -258,7 +258,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['logout']) && $_POST['
 
                 //DISPLAY RESULTS IN DB
                 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["query"])) {
-                    $query = filter_var($_POST["query"], FILTER_UNSAFE_RAW);
+                    $query = filter_var(htmlspecialchars($_POST["query"]), FILTER_UNSAFE_RAW);
                 }
 
                 // GET RESULTS

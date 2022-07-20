@@ -69,7 +69,7 @@ function get_transaction_by_desc(int $user_id, string $desc):array {
         $conn = null;
         return $transaction_list;
     } catch(PDOException $e) {
-        echo $sqlGetTransactionByDetails . "<br>" . $e->getMessage();
+        // echo $sqlGetTransactionByDetails . "<br>" . $e->getMessage();
         $conn = null;
         return array();
     }
@@ -86,7 +86,7 @@ function update_amount(int $user_id, int $transaction_id, int $amount):bool {
         $conn = null;
         return True;
     } catch(PDOException $e) {
-        echo $sqlUpdateAmount . "<br>" . $e->getMessage();
+        // echo $sqlUpdateAmount . "<br>" . $e->getMessage();
         $conn = null;
         return False;
     }
@@ -103,7 +103,7 @@ function update_desc(int $user_id, int $transaction_id, string $desc):bool {
         $conn = null;
         return True;
     } catch(PDOException $e) {
-        echo $sqlUpdateDetails . "<br>" . $e->getMessage();
+        // echo $sqlUpdateDetails . "<br>" . $e->getMessage();
         $conn = null;
         return False;
     }
