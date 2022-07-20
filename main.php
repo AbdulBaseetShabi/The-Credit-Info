@@ -212,7 +212,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['logout']) && $_POST['
 <body>
     <div id="body">
         <div id="header">
-            <label id="title">The Credit Info</label>
+            <label id="title">CREDERE</label>
             <div id="search">
                 <form id="query-form" method="post" action="/main.php">
                     <input id="search-query" type="text" name="query" placeholder="Enter a description" autocomplete="off" />
