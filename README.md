@@ -16,7 +16,7 @@ With looming threats of a recession, raising interest rates and increased intere
 
 ### Technologies 
 ---
-- **The Web Application** was built on ***PHP*** for the view and ***MySQL*** for the database.
+- **The Web Application** was built on ***PHP*** for the view which is hosted on an ***Apache server*** and ***MySQL*** for the database which is hosted on a ***MySQL server***.
 
 ### Client Pages 
 --- 
